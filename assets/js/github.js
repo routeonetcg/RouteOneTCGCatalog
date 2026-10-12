@@ -34,7 +34,7 @@ function guessRepo() {
     const repo = location.pathname.split('/').filter(Boolean)[0];
     return { owner: m[1], repo: repo && !repo.endsWith('.html') ? repo : `${m[1]}.github.io` };
   }
-  return { owner: 'paulanthony-alt', repo: 'RouteOneTCGCatalog' };
+  return { owner: 'routeonetcg', repo: 'RouteOneTCGCatalog' };
 }
 
 async function api(config, path, options = {}) {

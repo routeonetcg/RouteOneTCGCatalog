@@ -11,13 +11,15 @@ It's a plain static website (HTML/CSS/JS), so it's free to host on GitHub Pages.
 
 ## 1. Put the site online (once)
 
-1. Merge this branch into `main` on GitHub.
+1. Make sure the code is on a `main` branch (merge this branch into `main`, or rename it to `main` under **Settings → Branches** if it's the only branch).
 2. In the repo go to **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**, branch **`main`**, folder **`/ (root)`**, and save.
 4. After a minute your catalog is live at
-   `https://paulanthony-alt.github.io/RouteOneTCGCatalog/`
+   `https://routeonetcg.github.io/RouteOneTCGCatalog/`
    and the Manager at
-   `https://paulanthony-alt.github.io/RouteOneTCGCatalog/admin.html`
+   `https://routeonetcg.github.io/RouteOneTCGCatalog/admin.html`
+
+   Want just `https://routeonetcg.github.io/`? Rename the repository to `routeonetcg.github.io` (**Settings → General → Repository name**). The Manager detects the new name on its own.
 
 > GitHub Pages is free for **public** repositories. A private repo needs a paid GitHub plan for Pages.
 
@@ -26,11 +28,11 @@ It's a plain static website (HTML/CSS/JS), so it's free to host on GitHub Pages.
 The Manager publishes by saving your cards into this repository. Each of you needs a token:
 
 1. On GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
-2. **Repository access:** *Only select repositories* → `RouteOneTCGCatalog`.
+2. **Resource owner:** `routeonetcg`. **Repository access:** *Only select repositories* → `RouteOneTCGCatalog`.
 3. **Repository permissions → Contents:** *Read and write*. Nothing else is needed.
 4. Copy the token, open the Manager → **Publishing** tab, paste it, and click **Save & test connection**.
 
-The token is stored only in that browser. Your friend needs their own GitHub account with write access to the repo (**Settings → Collaborators → Add people**) and their own token.
+The token is stored only in that browser. Your friend needs their own GitHub account, added as a member of the `routeonetcg` organization with write access to this repo, and their own token. If the organization requires approval for fine-grained tokens, an owner approves it under **Organization settings → Personal access tokens**.
 
 ## 3. Day-to-day use
 
