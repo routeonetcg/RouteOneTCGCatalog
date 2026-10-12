@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Catalog Manager</title>
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="admin-header">
+      <div class="wrap admin-header-inner">
+        <a class="brand" href="index.html" title="View public catalog">
+          <img class="brand-mark" src="assets/img/favicon.svg" alt="" />
+          <span class="brand-name"><span data-bind="storeName">Route One TCG</span> <span class="brand-sub">Manager</span></span>
+        </a>
+        <span class="draft-pill" id="draftStatus" role="status">Loading…</span>
+        <a class="btn btn-ghost btn-sm hide-sm" href="index.html?preview=1" target="_blank" rel="noopener">Preview</a>
+        <button class="btn btn-accent btn-sm" type="button" id="publishBtn">Publish</button>
+      </div>
+      <nav class="wrap admin-tabs" role="tablist" aria-label="Manager sections">
+        <button role="tab" type="button" data-tab="inventory" aria-selected="true">Inventory</button>
+        <button role="tab" type="button" data-tab="store" aria-selected="false">Store details</button>
+        <button role="tab" type="button" data-tab="publish" aria-selected="false">Publishing</button>
+        <button role="tab" type="button" data-tab="backup" aria-selected="false">Backup</button>
+      </nav>
+    </header>
+
+    <main class="wrap admin-main">
+      <!-- ============================================================ inventory -->
+      <section data-panel="inventory" role="tabpanel">
+        <div class="stat-row" id="invStats"></div>
+
+        <div class="notice" id="sampleNotice" hidden>
+          <div>
+            <strong>These are example cards.</strong>
+            They show how the catalog looks. Add your own cards, then remove the examples.
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" id="removeSamples">Remove examples</button>
+        </div>
+
+        <div class="inv-toolbar">
+          <label class="field search">
+            <span class="sr-only">Search inventory</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+            <input class="input" type="search" id="invSearch" placeholder="Search inventory…" autocomplete="off" />
+          </label>
+          <label class="field">
+            <span class="sr-only">Status</span>
+            <select class="select" id="invStatus">
+              <option value="all">All statuses</option>
+              <option value="available">Available</option>
+              <option value="hold">On hold</option>
+              <option value="sold">Sold</option>
+              <option value="featured">Showcase only</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="sr-only">Sort</span>
+            <select class="select" id="invSort">
+              <option value="updated">Recently edited</option>
+              <option value="newest">Recently added</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </label>
+          <button class="btn btn-primary" type="button" id="addCard">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
+            Add card
+          </button>
+        </div>
+
+        <div class="inv-table" id="invList" role="list"></div>
+        <div class="empty" id="invEmpty" hidden>
+          <h3>No cards yet</h3>
+          <p>Click <strong>Add card</strong> to put your first card in the catalog.</p>
+        </div>
+      </section>
+
+      <!-- ================================================================ store -->
+      <section data-panel="store" role="tabpanel" hidden>
+        <form class="panel-form" id="storeForm" autocomplete="off">
+          <div class="form-card">
+            <h2>Storefront</h2>
+            <p class="help">This text appears at the top and bottom of your public catalog.</p>
+            <div class="form-grid">
+              <label class="fld span-2">Business name<input class="input" name="storeName" required /></label>
+              <label class="fld span-2">Headline<input class="input" name="tagline" placeholder="Cards worth collecting." /></label>
+              <label class="fld span-2">Intro<textarea class="input" name="intro" rows="2"></textarea></label>
+              <label class="fld span-2">About heading<input class="input" name="aboutTitle" /></label>
+              <label class="fld span-2">About text<textarea class="input" name="about" rows="4"></textarea></label>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h2>Why buy from you</h2>
+            <p class="help">Three short promises shown under the About text. Leave one blank to hide it.</p>
+            <div class="form-grid promises-grid">
+              <label class="fld">Promise 1<input class="input" name="promise0title" /></label>
+              <label class="fld">Details<input class="input" name="promise0text" /></label>
+              <label class="fld">Promise 2<input class="input" name="promise1title" /></label>
+              <label class="fld">Details<input class="input" name="promise1text" /></label>
+              <label class="fld">Promise 3<input class="input" name="promise2title" /></label>
+              <label class="fld">Details<input class="input" name="promise2text" /></label>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h2>Contact &amp; selling</h2>
+            <p class="help">Buyers use these to reach you. The “Inquire” button on each card emails the address below.</p>
+            <div class="form-grid">
+              <label class="fld">Email<input class="input" name="email" type="email" placeholder="you@example.com" /></label>
+              <label class="fld">Instagram<input class="input" name="instagram" placeholder="@yourhandle" /></label>
+              <label class="fld">TikTok<input class="input" name="tiktok" placeholder="@yourhandle" /></label>
+              <label class="fld">Whatnot<input class="input" name="whatnot" placeholder="username or link" /></label>
+              <label class="fld">eBay<input class="input" name="ebay" placeholder="username or store link" /></label>
+              <label class="fld">Location<input class="input" name="location" placeholder="City, State" /></label>
+              <label class="fld span-2">Shipping / pickup note<input class="input" name="shippingNote" /></label>
+              <label class="fld">Currency
+                <select class="select" name="currency">
+                  <option>USD</option><option>CAD</option><option>GBP</option><option>EUR</option><option>AUD</option>
+                </select>
+              </label>
+              <label class="fld check"><input type="checkbox" name="showMarketValue" /> Show market value next to prices</label>
+            </div>
+          </div>
+          <p class="help">Changes save automatically to your draft. Press <strong>Publish</strong> to put them live.</p>
+        </form>
+      </section>
+
+      <!-- ============================================================== publish -->
+      <section data-panel="publish" role="tabpanel" hidden>
+        <div class="panel-form">
+          <div class="form-card">
+            <h2>How publishing works</h2>
+            <ol class="steps">
+              <li>Edits you make here are saved as a <strong>draft on this device</strong>. Use <em>Preview</em> to see them.</li>
+              <li><strong>Publish</strong> uploads your cards and photos to the GitHub repository that hosts the site. The public catalog updates about a minute later.</li>
+              <li>If your partner published while you were editing, their changes are merged in automatically — nothing gets overwritten unless you both edited the same card.</li>
+            </ol>
+          </div>
+
+          <form class="form-card" id="ghForm" autocomplete="off">
+            <h2>GitHub connection</h2>
+            <p class="help">
+              Each of you needs a GitHub <strong>fine-grained personal access token</strong> once per device:
+              GitHub → Settings → Developer settings → Fine-grained tokens → <em>Generate new token</em>.
+              Choose <em>Only select repositories</em> → this repo, then under <em>Repository permissions</em> set
+              <strong>Contents</strong> to <strong>Read and write</strong>. Paste it below. The token stays in this browser only.
+            </p>
+            <div class="form-grid">
+              <label class="fld">Repository owner<input class="input" name="owner" required /></label>
+              <label class="fld">Repository name<input class="input" name="repo" required /></label>
+              <label class="fld">Branch <span class="opt">(blank = default)</span><input class="input" name="branch" placeholder="main" /></label>
+              <label class="fld">Access token<input class="input" name="token" type="password" placeholder="github_pat_…" autocomplete="off" spellcheck="false" /></label>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Save &amp; test connection</button>
+              <button class="btn btn-ghost" type="button" id="forgetToken">Forget token</button>
+            </div>
+            <p class="result-line" id="ghResult" role="status"></p>
+          </form>
+
+          <div class="form-card">
+            <h2>Publish log</h2>
+            <p class="help" id="lastPublished"></p>
+            <pre class="log" id="publishLog">Nothing published from this device yet.</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== backup -->
+      <section data-panel="backup" role="tabpanel" hidden>
+        <div class="panel-form">
+          <div class="form-card">
+            <h2>Back up</h2>
+            <p class="help">Download everything — cards, store details and photos — as one file. Keep a copy somewhere safe.</p>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="button" id="exportBtn">Download backup</button>
+              <button class="btn btn-ghost" type="button" id="exportCsv">Download spreadsheet (CSV)</button>
+            </div>
+          </div>
+          <div class="form-card">
+            <h2>Restore</h2>
+            <p class="help">Load a backup file into your draft. This replaces your current draft; publish afterwards to make it live.</p>
+            <label class="btn btn-ghost file-btn">
+              Choose backup file…
+              <input type="file" id="importFile" accept="application/json,.json" hidden />
+            </label>
+          </div>
+          <div class="form-card danger">
+            <h2>Discard draft</h2>
+            <p class="help">Throw away unpublished changes on this device and reload the live catalog.</p>
+            <button class="btn btn-ghost" type="button" id="discardDraft">Discard unpublished changes</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================================================================ editor -->
+    <dialog class="drawer" id="editor" aria-labelledby="editorTitle">
+      <form id="cardForm" method="dialog" autocomplete="off" novalidate>
+        <header class="drawer-head">
+          <h2 id="editorTitle">Add card</h2>
+          <button class="icon-btn" type="button" data-cancel aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </header>
+
+        <div class="drawer-body">
+          <fieldset>
+            <legend>Photos</legend>
+            <div class="photos" id="photoList"></div>
+            <label class="dropzone" id="dropzone">
+              <input type="file" id="photoInput" accept="image/*" multiple hidden />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></svg>
+              <span><strong>Add photos</strong> — tap to take or choose, or drop files here</span>
+              <small>Front first, then back and close-ups. Photos are resized automatically.</small>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Card</legend>
+            <div class="form-grid">
+              <label class="fld span-2">Card name <span class="req">*</span><input class="input" name="name" required placeholder="e.g. Charizard" /></label>
+              <label class="fld">Game
+                <select class="select" name="game" id="gameSelect"></select>
+              </label>
+              <label class="fld">Set<input class="input" name="set" list="setList" placeholder="e.g. Base Set" /></label>
+              <label class="fld">Card number<input class="input" name="number" placeholder="e.g. 4/102" /></label>
+              <label class="fld">Rarity<input class="input" name="rarity" list="rarityList" placeholder="e.g. Holo Rare" /></label>
+              <label class="fld">Variant / edition<input class="input" name="variant" placeholder="e.g. 1st Edition, Reverse Holo" /></label>
+              <label class="fld">Language<input class="input" name="language" list="langList" /></label>
+              <label class="fld">Year<input class="input" name="year" inputmode="numeric" maxlength="4" placeholder="e.g. 1999" /></label>
+            </div>
+            <datalist id="setList"></datalist>
+            <datalist id="rarityList"></datalist>
+            <datalist id="langList">
+              <option>English</option><option>Japanese</option><option>Korean</option><option>Chinese</option><option>French</option><option>German</option><option>Italian</option><option>Spanish</option><option>Portuguese</option>
+            </datalist>
+          </fieldset>
+
+          <fieldset>
+            <legend>Condition</legend>
+            <div class="segmented" role="radiogroup" aria-label="Raw or graded">
+              <label><input type="radio" name="graded" value="raw" checked /> <span>Raw</span></label>
+              <label><input type="radio" name="graded" value="graded" /> <span>Graded slab</span></label>
+            </div>
+            <div class="form-grid" data-when="raw">
+              <label class="fld">Condition
+                <select class="select" name="condition">
+                  <option value="NM">Near Mint (NM)</option>
+                  <option value="LP">Lightly Played (LP)</option>
+                  <option value="MP">Moderately Played (MP)</option>
+                  <option value="HP">Heavily Played (HP)</option>
+                  <option value="DMG">Damaged (DMG)</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-grid three" data-when="graded" hidden>
+              <label class="fld">Grader
+                <select class="select" name="gradingCompany">
+                  <option>PSA</option><option>BGS</option><option>CGC</option><option>SGC</option><option>TAG</option><option>Other</option>
+                </select>
+              </label>
+              <label class="fld">Grade<input class="input" name="grade" placeholder="e.g. 10" /></label>
+              <label class="fld">Cert #<input class="input" name="certNumber" placeholder="optional" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Price &amp; availability</legend>
+            <div class="form-grid">
+              <label class="fld">Asking price<span class="money"><span class="cur" data-cur>$</span><input class="input tnum" name="price" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Blank = price on request" /></span></label>
+              <label class="fld">Market value<span class="money"><span class="cur" data-cur>$</span><input class="input tnum" name="marketValue" type="number" min="0" step="0.01" inputmode="decimal" placeholder="optional" /></span></label>
+              <label class="fld">Quantity<input class="input tnum" name="quantity" type="number" min="0" step="1" inputmode="numeric" /></label>
+              <label class="fld">Status
+                <select class="select" name="status">
+                  <option value="available">Available</option>
+                  <option value="hold">On hold</option>
+                  <option value="sold">Sold</option>
+                </select>
+              </label>
+            </div>
+            <label class="feature-toggle">
+              <input type="checkbox" name="featured" />
+              <span>
+                <strong>Show in the Showcase</strong>
+                <small>Highlight this card at the top of the catalog. Save it for your best pieces.</small>
+              </span>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Details</legend>
+            <div class="form-grid">
+              <label class="fld span-2">Description<textarea class="input" name="description" rows="4" placeholder="Centering, surface, any flaws, where it came from…"></textarea></label>
+              <label class="fld span-2">Tags <span class="opt">(comma separated, help with search)</span><input class="input" name="tags" placeholder="e.g. vintage, holo, starter" /></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <footer class="drawer-foot">
+          <button class="btn btn-ghost danger-text" type="button" id="deleteCard">Delete</button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost" type="button" data-cancel>Cancel</button>
+          <button class="btn btn-primary" type="submit">Save card</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="confirm" id="confirmDialog">
+      <form method="dialog">
+        <h3 id="confirmTitle">Are you sure?</h3>
+        <p id="confirmText"></p>
+        <div class="form-actions">
+          <button class="btn btn-ghost" value="cancel">Cancel</button>
+          <button class="btn btn-accent" value="ok" id="confirmOk">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script type="module" src="assets/js/admin.js"></script>
+  </body>
+</html>

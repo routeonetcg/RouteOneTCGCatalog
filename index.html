@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Route One TCG — Card Catalog</title>
+    <meta name="description" content="Graded slabs, vintage holos and modern chase cards. Browse the Route One TCG catalog." />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <div class="preview-banner" id="previewBanner" hidden>
+      Previewing your unpublished draft — only you can see this. <a href="admin.html">Back to the manager</a>
+    </div>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="#top" aria-label="Home">
+          <img class="brand-mark" src="assets/img/favicon.svg" alt="" />
+          <span class="brand-name" data-bind="storeName">Route One TCG</span>
+        </a>
+        <nav class="site-nav" aria-label="Sections">
+          <a href="#showcase" data-nav="showcase">Showcase</a>
+          <a href="#catalog">Catalog</a>
+          <a href="#about">About</a>
+        </nav>
+        <a class="btn btn-primary btn-sm" href="#contact">Contact us</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">Trading card catalog</p>
+            <h1 data-bind="tagline">Cards worth collecting.</h1>
+            <p class="lede" data-bind="intro"></p>
+            <div class="hero-actions">
+              <a class="btn btn-accent" href="#catalog">Browse the catalog</a>
+              <a class="btn btn-ghost" href="#showcase" data-nav="showcase">See the showcase</a>
+            </div>
+            <dl class="hero-stats" id="heroStats"></dl>
+          </div>
+          <div class="hero-visual" id="heroFan"></div>
+        </div>
+      </section>
+
+      <section class="showcase" id="showcase" aria-labelledby="showcaseTitle">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">The Showcase</p>
+              <h2 id="showcaseTitle">Highlights from the collection</h2>
+              <p class="showcase-sub">Our most special pieces — grails, gem-mint slabs and cards we're proudest to offer.</p>
+            </div>
+            <div class="carousel-controls">
+              <button class="icon-btn" type="button" data-scroll="-1" aria-label="Previous highlights">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <button class="icon-btn" type="button" data-scroll="1" aria-label="Next highlights">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </div>
+          </div>
+          <div class="showcase-track" id="showcaseTrack"></div>
+        </div>
+      </section>
+
+      <section class="catalog" id="catalog" aria-labelledby="catalogTitle">
+        <div class="wrap">
+          <div class="print-header">
+            <strong data-bind="storeName">Route One TCG</strong>
+            <span id="printDate"></span>
+          </div>
+
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Full catalog</p>
+              <h2 id="catalogTitle">Browse every card</h2>
+            </div>
+            <button class="btn btn-ghost btn-sm" type="button" id="printBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v8H6z" /></svg>
+              Print / save as PDF
+            </button>
+          </div>
+
+          <div class="game-chips" id="gameChips" aria-label="Filter by game"></div>
+
+          <div class="toolbar">
+            <label class="field search">
+              <span class="sr-only">Search cards</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+              <input class="input" type="search" id="search" placeholder="Search name, set, number…" autocomplete="off" />
+            </label>
+            <label class="field">
+              <span class="sr-only">Condition type</span>
+              <select class="select" id="typeFilter">
+                <option value="all">Graded &amp; raw</option>
+                <option value="graded">Graded only</option>
+                <option value="raw">Raw only</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="sr-only">Availability</span>
+              <select class="select" id="statusFilter">
+                <option value="active">For sale</option>
+                <option value="available">Available now</option>
+                <option value="sold">Sold archive</option>
+                <option value="all">Everything</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="sr-only">Sort</span>
+              <select class="select" id="sort">
+                <option value="featured">Featured first</option>
+                <option value="newest">Newest arrivals</option>
+                <option value="price-desc">Price: high to low</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </label>
+            <div class="price-range">
+              <label class="sr-only" for="minPrice">Minimum price</label>
+              <input class="input tnum" type="number" id="minPrice" min="0" inputmode="numeric" placeholder="Min $" />
+              <span aria-hidden="true">–</span>
+              <label class="sr-only" for="maxPrice">Maximum price</label>
+              <input class="input tnum" type="number" id="maxPrice" min="0" inputmode="numeric" placeholder="Max $" />
+            </div>
+          </div>
+
+          <div class="result-bar">
+            <span id="resultCount" aria-live="polite"></span>
+            <span class="view-toggle">
+              <button class="link-btn" type="button" id="clearFilters" hidden>Clear filters</button>
+              <button class="icon-btn" type="button" id="viewToggle" aria-label="Switch to list view" title="Grid / list view">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" /></svg>
+              </button>
+            </span>
+          </div>
+
+          <div class="grid" id="grid" aria-live="polite"></div>
+          <div class="empty" id="empty" hidden>
+            <h3>No cards match</h3>
+            <p>Try a different search or clear the filters.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="about" aria-labelledby="aboutTitle">
+        <div class="wrap about-inner">
+          <div class="about-copy">
+            <p class="eyebrow">About us</p>
+            <h2 id="aboutTitle" data-bind="aboutTitle"></h2>
+            <p data-bind="about"></p>
+            <ul class="promises" id="promises"></ul>
+          </div>
+          <div class="contact-card" id="contact">
+            <h3>Want a card?</h3>
+            <p>Message us to buy, make an offer or ask for more photos. We also buy and trade.</p>
+            <ul class="contact-list" id="contactList"></ul>
+            <p class="shipping-note" data-bind="shippingNote"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <span>© <span id="year"></span> <span data-bind="storeName">Route One TCG</span>. All card names and images are trademarks of their respective owners.</span>
+        <span><span id="updated"></span> · <a href="admin.html" rel="nofollow">Manage</a></span>
+      </div>
+    </footer>
+
+    <dialog class="card-dialog" id="cardDialog" aria-labelledby="dlgName">
+      <button class="icon-btn dialog-close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+      </button>
+      <div class="dialog-shell">
+        <div class="dialog-gallery">
+          <div class="gallery-main holo" id="dlgMain"><img id="dlgImg" alt="" /></div>
+          <div class="gallery-thumbs" id="dlgThumbs"></div>
+        </div>
+        <div class="dialog-info" id="dlgInfo"></div>
+      </div>
+      <button class="icon-btn dialog-nav prev" type="button" data-step="-1" aria-label="Previous card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+      </button>
+      <button class="icon-btn dialog-nav next" type="button" data-step="1" aria-label="Next card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+      </button>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script type="module" src="assets/js/catalog.js"></script>
+  </body>
+</html>
